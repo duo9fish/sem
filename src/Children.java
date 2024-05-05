@@ -1,3 +1,4 @@
+Hello
 import java.util.Scanner;
 
 // it is a sub class that the parents class is Customer
