@@ -4,21 +4,17 @@ public class mainProgram {
     public static void main(String[] args) {
         Boolean cont = true;
         MovieModule movieModule = new MovieModule();
-        
 
-        // Create theatre objects (under 3. SEAT SELECTION MODULE) - theatre halls only
-        // need to be created once (else clears takenSeats after each loop)
         Theatre[] halls = {
-                new Theatre(1),
-                new Theatre(2),
-                new Theatre(3),
-                new Theatre(4),
-                new Theatre(5),
+            new Theatre(1),
+            new Theatre(2),
+            new Theatre(3),
+            new Theatre(4),
+            new Theatre(5),
         };
 
         do {
-            //// --1. MOVIES MODULE--////
-            // Display Header and Available Movies
+            // Movies Module
             movieModule.displayMovies();
             int movieChosenIndex = movieModule.selectMovie();
             Movie selectedMovie = movieModule.getSelectedMovie(movieChosenIndex - 1);
@@ -27,38 +23,29 @@ public class mainProgram {
             selectedMovie.movieTableHeader();
             System.out.printf("|%-3d", movieChosenIndex);
             selectedMovie.printMovieDetails();
-            PaymentUtil.printLine();
+            printLine();
 
-            //// --------------------////
-
-            //// --2. TICKETING MODULE--////
-            // create three object to call methods
+            // Ticketing Module
             Adult adult = new Adult();
             Children children = new Children();
             Student student = new Student();
 
-            int totalQuantity,
-                    adultQuantity,
-                    childQuantity,
-                    studentQuantity;
-            // Input Total Quantity of Ticket
+            int totalQuantity, adultQuantity, childQuantity, studentQuantity;
             do {
                 totalQuantity = adult.inputValidation(); // input and validation
 
                 // Input Quantity of Adult tickets
                 adultQuantity = adult.input(totalQuantity);
                 totalQuantity -= adultQuantity;
-
-                adult.ticketsLeft(totalQuantity); // Print total tickets (specified by user prior) left
+                adult.ticketsLeft(totalQuantity); // Print total tickets left
 
                 // Input Quantity of Student tickets
                 studentQuantity = student.input(totalQuantity);
                 totalQuantity -= studentQuantity;
-
-                adult.ticketsLeft(totalQuantity); // Print total tickets (specified by user prior) left
+                adult.ticketsLeft(totalQuantity); // Print total tickets left
 
                 // Input Quantity of Children tickets
-                if (selectedMovie.getMoviePGRating() != "18+") {
+                if (!"18+".equals(selectedMovie.getMoviePGRating())) {
                     childQuantity = children.input(totalQuantity);
                     totalQuantity -= childQuantity;
                 } else {
@@ -71,21 +58,16 @@ public class mainProgram {
                 }
             } while (totalQuantity != 0);
 
-            // to pass value into customer class and those sub-classes for claculations
-            // purpose
+            // Pass value into customer classes for calculations
             Customer adultTickets = new Adult(adultQuantity, childQuantity, studentQuantity);
             Customer childTickets = new Children(adultQuantity, childQuantity, studentQuantity);
             Customer studentTickets = new Student(adultQuantity, childQuantity, studentQuantity);
-            //// --------------------////
 
-            //// -- 3. SEAT SELECTION MODULE--////
-
-            // Display seat diagram (based on hall number)
+            // Seat Selection Module
             int hallNumber = selectedMovie.getMovieHallNumber();
             Theatre theatre = halls[hallNumber - 1];
             theatre.displaySeats(hallNumber);
 
-            // Select seats for each customer
             int seatNumber;
             int totalCustomer = adultQuantity + childQuantity + studentQuantity;
 
@@ -93,13 +75,10 @@ public class mainProgram {
                 seatNumber = theatre.inputValidation(i); // get and validate seat number input
                 theatre.removeSeat(seatNumber); // remove seat number (mark as occupied)
                 theatre.takenSeats.add(new Seat(seatNumber, hallNumber)); // apppend taken seat info in takenSeats[]
-                theatre.displaySeats(hallNumber); // display current seat diagram (know which seats taken)
+                theatre.displaySeats(hallNumber); // display current seat diagram
             }
 
-            //// --------------------////
-
-            //// --TICKET PRINTING MODULE--////
-            // Displaying Bill for Payment
+            // Ticket Printing Module
             Adult adu = new Adult();
             Children chi = new Children();
             Student stu = new Student();
@@ -121,8 +100,8 @@ public class mainProgram {
             printLine();
             System.out.println("Total(RM) : \t" + pay.getAmount());
             printLine();
-            // Press Enter To Proceed to Payment
-            pay.pressEnterToProceed();
+
+            pay.waitForUserToProceed(); // Changed from pressEnterToProceed
 
             // Clear screen for payment
             System.out.print("\033[H\033[2J");
@@ -133,9 +112,9 @@ public class mainProgram {
             printLine();
             System.out.println("|1. Cash Payment\t\t\t\t\t\t\t\t\t| \n|2. Credit/Debit Card Payment\t\t\t\t\t\t\t\t|");
             printLine();
-            pay.setPaymentType();
+            pay.getPaymentType(); // Changed from setPaymentType
             System.out.print("\n\n***Payment complete****");
-            pay.pressEnterToProceed();
+            pay.waitForUserToProceed(); // Changed from pressEnterToProceed
 
             // Ticket Printing
             Ticket tic = new Ticket(); // create new ticket with movie name
@@ -148,8 +127,7 @@ public class mainProgram {
             printLine();
             tic.printTicket(adultQuantity, childQuantity, studentQuantity, theatre,
                     selectedMovie.getMovieName(), adu.calPrice(), chi.calPrice(), stu.calPrice());
-            // Check if anymore customer
-            cont = adult.askCustomer(); // the method is in Customer table to check condition
+            cont = adult.askCustomer(); // Check if any more customer
         } while (cont);
 
         System.out.println("\nThank you! Have a great day.");
