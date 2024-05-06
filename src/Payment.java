@@ -35,24 +35,50 @@ public class Payment {
     }
 
     // To select payment method
-    public int getPaymentType() {
-        try (Scanner sc = new Scanner(System.in)) {
-            int result;
-            while (true) {
-                try {
-                    System.out.print("\nSelect Your Payment Method (1 / 2): ");
-                    String paymentMethod = sc.next();
-                    result = Integer.parseInt(paymentMethod);
-                    if (result == 1 || result == 2) {
-                        System.out.println("You have selected payment method " + result);
-                        return result;
-                    } else {
-                        System.out.println("Invalid option. Please try again.");
-                    }
-                } catch (NumberFormatException e) {
-                    System.out.println("Invalid input. Please enter a number.");
-                }
+    public void setPaymentType() {
+        String paymentMethod;
+        Scanner sc = new Scanner(System.in);
+        int result;
+        while (true) {
+            try {
+                System.out.print("\nSelect Your Payment Method (1 / 2): ");
+                paymentMethod = sc.next();
+                result = Integer.parseInt(paymentMethod);
+            } catch (Exception e) {
+                System.out.println("Invalid input, please try again.");
+                continue;
             }
+
+            if (result != 1 && result != 2) {
+                System.out.print("\nInvalid input! Please select (1 / 2):");
+            } else {
+                break;
+            }
+        }
+        // Payment selection and validation
+        switch (paymentMethod) {
+            case "1":
+                double cashAmount, tempCash;
+                System.out.print("\nEnter Cash To Pay(RM): ");
+                cashAmount = sc.nextDouble();
+                while (cashAmount < amount) {
+                    System.out.print("\nInsufficient cash for payment. Please add more.\nTotal paid(RM): "
+                            + (cashAmount) + "\nTotal Payable(RM): " + (getAmount()) + "\nAdd: ");
+                    tempCash = sc.nextDouble();
+                    cashAmount += tempCash;
+                }
+                if (cashAmount >= amount) {
+                    System.out
+                            .println("Payment Successful. Total paid is RM " + String.format("%.2f", cashAmount) + ".");
+                    System.out.print("\nBalance(RM): " + String.format("%.2f", (cashAmount - amount)));
+                }
+                break;
+            case "2":
+                //String name, cardNo;
+                //String expireDate = "1000100010001000";
+                CreditCardPayment ccp = new CreditCardPayment();
+                ccp.promptForCardDetails();
+                break;
         }
     }
 
