@@ -63,7 +63,8 @@ public class Payment {
                 handleCashPayment();
                 break;
             case 2:
-                handleCardPayment();
+                CreditCardPayment ccp = new CreditCardPayment();
+                ccp.promptForCardDetails();
                 break;
             default:
                 System.out.println("Invalid payment method selected.");
