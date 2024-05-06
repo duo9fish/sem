@@ -112,7 +112,7 @@ public class mainProgram {
             printLine();
             System.out.println("|1. Cash Payment\t\t\t\t\t\t\t\t\t| \n|2. Credit/Debit Card Payment\t\t\t\t\t\t\t\t|");
             printLine();
-            pay.getPaymentType(); // Changed from setPaymentType
+            pay.setPaymentType(); // Changed from setPaymentType
             System.out.print("\n\n***Payment complete****");
             pay.waitForUserToProceed(); // Changed from pressEnterToProceed
 
