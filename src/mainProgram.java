@@ -32,21 +32,21 @@ public class mainProgram {
 
             int totalQuantity, adultQuantity, childQuantity, studentQuantity;
             do {
-                totalQuantity = adult.inputValidation(); // input and validation
+                totalQuantity = validateInputforTotal(30, true); // input and validation
 
                 // Input Quantity of Adult tickets
-                adultQuantity = adult.input(totalQuantity);
+                adultQuantity = adult.validateInput(totalQuantity, false);
                 totalQuantity -= adultQuantity;
                 adult.ticketsLeft(totalQuantity); // Print total tickets left
 
                 // Input Quantity of Student tickets
-                studentQuantity = student.input(totalQuantity);
+                studentQuantity = student.validateInput(totalQuantity, false);
                 totalQuantity -= studentQuantity;
                 adult.ticketsLeft(totalQuantity); // Print total tickets left
 
                 // Input Quantity of Children tickets
                 if (!"18+".equals(selectedMovie.getMoviePGRating())) {
-                    childQuantity = children.input(totalQuantity);
+                    childQuantity = children.validateInput(totalQuantity, false);
                     totalQuantity -= childQuantity;
                 } else {
                     childQuantity = 0;
@@ -135,5 +135,29 @@ public class mainProgram {
 
     public static void printLine() {
         System.out.println("-----------------------------------------------------------------------------------------");
+    }
+
+    public static int validateInputforTotal(int totalQty, boolean isTotal) {
+    Scanner sc = new Scanner(System.in);
+    int qty;
+    String message = "quantity of total tickets needed";
+
+        do {
+            System.out.print("\nEnter " + message + ": ");
+            while (!sc.hasNextInt()) {
+                System.out.println("Invalid input! Please enter NUMBERS ONLY!");
+                System.out.print("\nEnter " + message + ": ");
+                sc.next();
+            }
+            qty = sc.nextInt();
+    
+            if (qty < 0 || qty > totalQty) {
+                System.out.println("The maximum number of tickets that can be purchased at one time is limited to 30.");
+            } else {
+                break;
+            }
+        } while (true);
+
+        return qty;
     }
 }
