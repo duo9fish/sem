@@ -1,55 +1,68 @@
 import java.util.Scanner;
 
-// it is a sub class that the parents class is Customer
-public class Adult extends Customer {
-    private double adultPrice;
-    private final double DISCOUNT = 1;
 
-    // no args constructor
-    public Adult() {
-    }
+// Subclass of Customer representing adult customers
+public class Adult extends Customer
+{
 
-    // constructor with three parameters
-    public Adult(int adultQauntity, int childQuantity, int studentQuantity) {
-        super(adultQauntity, childQuantity, studentQuantity);
-    }
+  private double adultPrice;
+  private final double DISCOUNT = 1;
 
 
-    // validation method that use to validate input by user
-    public int input(int totalQty) {
+  // No-args constructor
+  public Adult (){}
+
+  // Constructor with parameters
+  public Adult (int adultQuantity, int childQuantity, int studentQuantity)
+  {
+
+	super (adultQuantity, childQuantity, studentQuantity);
+
+  }
+
+
+
+  // Validate input for adult ticket quantity
+  @Override
+    public int validateInput(int totalQty, boolean isTotal) {
+        Scanner sc = new Scanner(System.in);
         int qty;
+        String message = "quantity of adult tickets needed";
 
         do {
-            Scanner sc = new Scanner(System.in);
-            System.out.print("\nEnter quantity of adult tickets needed: ");
+            System.out.print("\nEnter " + message + ": ");
             while (!sc.hasNextInt()) {
-                System.out.println("Invalid input! Please enter NUMBERS ONLY!");
-                System.out.print("\nEnter quantity of adult tickets needed: ");
+                System.out.println("Invalid input! Please enter numbers only!");
+                System.out.print("\nEnter " + message + ": ");
                 sc.next();
             }
             qty = sc.nextInt();
-            if (super.inputValidation(qty, totalQty)) {
+
+            if (!isTotal && (qty < 0 || qty > totalQty)) {
+                System.out.println("Ticket count cannot be more than total quantity of tickets needed!");
+            } else {
                 break;
             }
-
-        } while (qty < 0 || qty > totalQty);
+        } while (true);
 
         return qty;
     }
-
-    // override the method that found in parent class to calculate adult price
-    @Override
+    
+    
+  // Override method to calculate adult price
+     @Override
     public double calPrice() {
         adultPrice = super.calPrice() * DISCOUNT;
         return adultPrice;
     }
 
-    // calculate total adult price
+    // Method to calculate total price of adult tickets
+    @Override
     public double calTotalPrice() {
-        return calPrice() * (double) super.getAdultQuantity();
+        return calPrice() * super.getAdultQuantity();
     }
 
-    // display the unit price as well as total price in each category by using toString method
+    // Method to display the unit price and total price of adult tickets
     @Override
     public String toString() {
         return String.format("%.2f", calPrice()) + "\t\t\t|" + String.format("%.2f", calTotalPrice());
