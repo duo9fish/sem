@@ -2,4 +2,5 @@
 public interface CustomerInterface {
     int validateInput(int totalQty, boolean isTotal);
     double calPrice();
+    double calTotalPrice();
 }
