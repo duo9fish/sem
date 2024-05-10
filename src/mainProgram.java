@@ -126,7 +126,7 @@ public class mainProgram {
                             + " Student Ticket(s)");
             printLine();
             tic.printTicket(adultQuantity, childQuantity, studentQuantity, theatre,
-                    selectedMovie.getMovieName(), adu.calPrice(), chi.calPrice(), stu.calPrice());
+                    selectedMovie.getMovieName(), adu.calPrice(), chi.calPrice(), stu.calPrice(), totalCustomer, null, stuPrice, totalCustomer);
             cont = adult.askCustomer(); // Check if any more customer
         } while (cont);
 
