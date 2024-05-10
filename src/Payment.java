@@ -83,19 +83,19 @@ public class Payment {
     }
 
     // Method to handle payment
-    public void processPayment() {
-        switch (getPaymentType()) {
-            case 1:
-                handleCashPayment();
-                break;
-            case 2:
-                CreditCardPayment ccp = new CreditCardPayment();
-                ccp.promptForCardDetails();
-                break;
-            default:
-                System.out.println("Invalid payment method selected.");
-        }
-    }
+    // public void processPayment() {
+    //     switch (getPaymentType()) {
+    //         case 1:
+    //             handleCashPayment();
+    //             break;
+    //         case 2:
+    //             CreditCardPayment ccp = new CreditCardPayment();
+    //             ccp.promptForCardDetails();
+    //             break;
+    //         default:
+    //             System.out.println("Invalid payment method selected.");
+    //     }
+    // }
 
     // Method to handle cash payment
     private void handleCashPayment() {
